@@ -13,13 +13,10 @@ end
 ```
 ## example
 ```ruby
-p EtherSwitch.hi
-#=> "hi!!"
-t = EtherSwitch.new "hello"
-p t.hello
-#=> "hello"
-p t.bye
-#=> "hello bye"
+t = EtherSwitch.new(0)
+p t.readreg(0x0509)
+22839
+#=> 22839
 ```
 
 ## License
