@@ -1,5 +1,5 @@
 # mruby-etherswitch   [![Build Status](https://travis-ci.org/yamori813/mruby-etherswitch.svg?branch=master)](https://travis-ci.org/yamori813/mruby-etherswitch)
-EtherSwitch class
+EtherSwitch class for FreeBSD
 ## install by mrbgems
 - add conf.gem line to `build_config.rb`
 
