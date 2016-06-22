@@ -42,15 +42,15 @@ static mrb_value mrb_etherswitch_init(mrb_state *mrb, mrb_value self)
   char device[32];
   mrb_int num;
 
-  data = (mrb_bsdiic_data *)DATA_PTR(self);
+  data = (mrb_etherswitch_data *)DATA_PTR(self);
   if (data) {
     mrb_free(mrb, data);
   }
-  DATA_TYPE(self) = &mrb_bsdiic_data_type;
+  DATA_TYPE(self) = &mrb_etherswitch_data_type;
   DATA_PTR(self) = NULL;
 
   mrb_get_args(mrb, "i", &num);
-  data = (mrb_bsdiic_data *)mrb_malloc(mrb, sizeof(mrb_bsdiic_data));
+  data = (mrb_etherswitch_data *)mrb_malloc(mrb, sizeof(mrb_etherswitch_data));
   snprintf(device, sizeof(device), "/dev/etherswitch%u", num);
   data->fd = open(device, O_RDWR); 
   DATA_PTR(self) = data;
@@ -60,14 +60,14 @@ static mrb_value mrb_etherswitch_init(mrb_state *mrb, mrb_value self)
 
 static mrb_value mrb_etherswitch_readreg(mrb_state *mrb, mrb_value self)
 {
-  mrb_bsdiic_data *data = DATA_PTR(self);
+  mrb_etherswitch_data *data = DATA_PTR(self);
   mrb_int addr, reg;
   struct etherswitch_reg er;
   char cmdbuf = 0;
 
   mrb_get_args(mrb, "i", &addr);
 
-  er.reg = r;
+  er.reg = addr;
   if (ioctl(data->fd, IOETHERSWITCHGETREG, &er) != 0)
     return mrb_fixnum_value(-1);
 
@@ -76,7 +76,7 @@ static mrb_value mrb_etherswitch_readreg(mrb_state *mrb, mrb_value self)
 
 static mrb_value mrb_etherswitch_writereg(mrb_state *mrb, mrb_value self)
 {
-  mrb_bsdiic_data *data = DATA_PTR(self);
+  mrb_etherswitch_data *data = DATA_PTR(self);
   mrb_int addr, val;
   struct etherswitch_reg er;
 
@@ -96,8 +96,8 @@ void mrb_mruby_etherswitch_gem_init(mrb_state *mrb)
     struct RClass *etherswitch;
     etherswitch = mrb_define_class(mrb, "EtherSwitch", mrb->object_class);
     mrb_define_method(mrb, etherswitch, "initialize", mrb_etherswitch_init, MRB_ARGS_REQ(1));
-    mrb_define_method(mrb, bsdiic, "readreg", mrb_etherswitch_readreg, MRB_ARGS_REQ(1));
-    mrb_define_method(mrb, bsdiic, "writereg", mrb_etherswitch_writereg, MRB_ARGS_REQ(2));
+    mrb_define_method(mrb, etherswitch, "readreg", mrb_etherswitch_readreg, MRB_ARGS_REQ(1));
+    mrb_define_method(mrb, etherswitch, "writereg", mrb_etherswitch_writereg, MRB_ARGS_REQ(2));
     DONE;
 }
 
