@@ -63,7 +63,6 @@ static mrb_value mrb_etherswitch_readreg(mrb_state *mrb, mrb_value self)
   mrb_etherswitch_data *data = DATA_PTR(self);
   mrb_int addr, reg;
   struct etherswitch_reg er;
-  char cmdbuf = 0;
 
   mrb_get_args(mrb, "i", &addr);
 
@@ -71,7 +70,7 @@ static mrb_value mrb_etherswitch_readreg(mrb_state *mrb, mrb_value self)
   if (ioctl(data->fd, IOETHERSWITCHGETREG, &er) != 0)
     return mrb_fixnum_value(-1);
 
-  return mrb_fixnum_value(cmdbuf);
+  return mrb_fixnum_value(er.val);
 }
 
 static mrb_value mrb_etherswitch_writereg(mrb_state *mrb, mrb_value self)
