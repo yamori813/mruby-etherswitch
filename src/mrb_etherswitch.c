@@ -23,7 +23,8 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 #include <net/if_media.h>
-#include <dev/etherswitch/etherswitch.h>
+
+#include "etherswitch.h"
 
 #define DONE mrb_gc_arena_restore(mrb, 0);
 
